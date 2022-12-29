@@ -1,6 +1,6 @@
-# PROJETO DE PLATAFORMA WEB SIMPLES COM LOGIN.
-# CADASTRAMENTO, LEITURA, ATUALIZAÇÃO E DELEÇÃO DE USUÁROS.
-# TECNOLOGIAS: FLASK,PYTHON,HTML,BOOTSTRAP,MYSQL,SQLALCHEMY,FLASK-LOGIN.
-# NOME DO BANCO: info_dados_db
-# NOME DA TABELA: info
-# COLUNAS: name, email, passwor, id
+# projeto de aplicação web simples com login.
+# cadastramento , leitura, atualização e deleção de usuarios.
+# tecnologias: flask, python , html, css, bootstrap, mysql, sqlalchemy, flask-login.
+# nome do banco: info_dados_db
+# nome da tabela: info
+# colunas: name, email, passwor, id
