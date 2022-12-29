@@ -2,6 +2,8 @@ from aplication import aplication
 from flask import render_template, redirect, request, url_for
 from flask_login import login_user, logout_user
 
+from werkzeug.security import generate_password_hash
+
 from aplication import aplication, db
 from aplication.models.models import Info
 
@@ -70,15 +72,13 @@ def deletar(id):
     return redirect(url_for('contas'))
 
 
-
 @aplication.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar(id):
     editar_usuario = Info.query.get(id)
     if request.method == 'POST': 
         editar_usuario.name = request.form['name'] 
         editar_usuario.email = request.form['email'] 
-        editar_usuario.pwd = request.form['password'] 
-        
+        editar_usuario.password = generate_password_hash(request.form['password'])
         
         db.session.commit() #SALVANDO  OS DADOS NO BANCO
         
