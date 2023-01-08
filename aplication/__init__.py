@@ -2,7 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 import mysql.connector
-
+import os
 
 
 aplication = Flask(__name__)
@@ -12,6 +12,8 @@ aplication.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:CostadoMarfimrx8*10
 
 
 aplication.config['SECRET_KEY'] = 'secret'
+
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload') # constante do endereço para armazenar a imagem
 
 
 login_manager = LoginManager(aplication)
