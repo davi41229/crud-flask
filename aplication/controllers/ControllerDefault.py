@@ -1,8 +1,9 @@
 from aplication import aplication
-from flask import render_template, redirect, request, url_for
+from flask import render_template, redirect, request, url_for, send_file
 from flask_login import login_user, logout_user
-import base64
-from PIL import Image
+
+
+
 
 from werkzeug.security import generate_password_hash
 
@@ -10,6 +11,11 @@ from werkzeug.security import generate_password_hash
 
 from aplication import aplication, db
 from aplication.models.models import Info
+
+import os
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'upload') # constante do endereço para armazenar a imagem
 
 
 
@@ -82,26 +88,38 @@ def editar(id):
     editar_usuario = Info.query.get(id)
     if request.method == 'POST': 
         editar_usuario.name = request.form['name'] 
-<<<<<<< HEAD
         editar_usuario.email = request.form['email']
         editar_usuario.image = request.form['image'].encode() 
-=======
-        editar_usuario.email = request.form['email'] 
->>>>>>> 646dc19a238e18ea42f47b84d802a8ce934cb245
         editar_usuario.password = generate_password_hash(request.form['password'])
         
-        db.session.commit() #SALVANDO  OS DADOS NO BANCO
+        db.session.commit() # SALVANDO  OS DADOS NO BANCO
         
         return redirect(url_for('contas'))
     return render_template( 'editar.html', editar_usuario=editar_usuario)
 
 
-@aplication.route('/save',methods=['GET', 'POST'])
-def salvar_imagem():
-    if request.method == 'POST':
-        image = request.form['image']
-        filename = image
-        img = Image.open(image)
-        rgb_img = img.convert('RGB')
-        rgb_img.save("uploads/" + filename + ".jpg")            
+# UPLOAD DE IMAGEM NA PASTA
+
+# ROTA DO FORMULARIO
+@aplication.route('/save')
+def form_imagem():      
     return render_template( 'upload.html')
+
+
+# ROTA PARA UPLOAD
+@aplication.route("/upload", methods=['POST'])
+def upload():
+    try:
+        file = request.files['image']
+        savePath = os.path.join(UPLOAD_FOLDER, secure_filename(file.filename))
+        file.save(savePath)
+        return render_template('upload.html')
+    except Exception as error:
+        print("Erro:", error)
+
+# ROTA PARA PEGAR IMAGEM
+@aplication.route('/image/<filename>')
+def image(filename):
+    file = os.path.join(UPLOAD_FOLDER, filename + ".png")
+    return send_file(file, mimetype="image/png")
+   
